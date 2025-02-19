@@ -19,11 +19,6 @@ import {
 } from "@/components/ui/sidebar"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard Managament",
@@ -69,7 +64,10 @@ const data = {
   
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type AppSidebarProps = {email?: string} & React.ComponentProps<typeof Sidebar>;
+
+
+export function AppSidebar({ email, ...props }: AppSidebarProps) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -92,9 +90,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+     {
+      email && (
+        <SidebarFooter>
+          <NavUser email={email}  />
+        </SidebarFooter>
+      )
+     }
     </Sidebar>
   )
 }
