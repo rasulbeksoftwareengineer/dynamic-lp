@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { FadeIn } from './fade-in';
 
 export function AboutUs() {
-  return <section className="mx-auto w-full max-w-7xl px-4 py-16 md:py-24">
+  return <section className="mx-auto w-full max-w-7xl px-4 py-16 md:py-24" id="about-us">
     <div className="grid items-center gap-12 md:grid-cols-2">
       <FadeIn>
         <Image
