@@ -6,15 +6,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FadeIn } from './fade-in';
 import Link from 'next/link';
+import { CarouselItem } from '@/shared/types/carousel-item.type';
 
-type CarouselItem = {
-  id: number;
-  created_at: string;
-  title: string;
-  description: string;
-  cta_text: string;
-  cta_link: string;
-};
 type CarouselProps = {
   items: CarouselItem[];
 };
