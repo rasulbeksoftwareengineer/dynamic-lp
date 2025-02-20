@@ -31,8 +31,8 @@ const data = {
           url: "/dashboard/navbar",
         },
         {
-          title: "Hero",
-          url: "/dashboard/hero",
+          title: "Corusel",
+          url: "/dashboard/corusel",
         },
         {
           title: "About us",
