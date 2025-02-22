@@ -58,7 +58,7 @@ export default function DataTable({ items }: DataTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {items && items?.length > 0 ? (
+          {items && items.length > 0 ? (
             items.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>

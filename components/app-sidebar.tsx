@@ -1,13 +1,10 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import {
-  Command,
-  SquareTerminal,
-} from "lucide-react"
+import * as React from 'react';
+import { Command, SquareTerminal } from 'lucide-react';
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from '@/components/nav-main';
+import { NavUser } from '@/components/nav-user';
 import {
   Sidebar,
   SidebarContent,
@@ -16,56 +13,54 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 const data = {
   navMain: [
     {
-      title: "Dashboard Managament",
-      url: "/dashboard",
+      title: 'Dashboard Managament',
+      url: '/dashboard',
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "Navbar",
-          url: "/dashboard/navbar",
+          title: 'Navbar',
+          url: '/dashboard/navbar',
         },
         {
-          title: "Corusel",
-          url: "/dashboard/corusel",
+          title: 'carousel',
+          url: '/dashboard/carousel',
         },
         {
-          title: "About us",
-          url: "/dashboard/about-us",
+          title: 'About us',
+          url: '/dashboard/about-us',
         },
         {
-          title: "Features",
-          url: "/dashboard/features",
+          title: 'Features',
+          url: '/dashboard/features',
         },
         {
-          title: "Testimonials",
-          url: "/dashboard/testimonials",
+          title: 'Testimonials',
+          url: '/dashboard/testimonials',
         },
         {
-          title: "FAQs",
-          url: "/dashboard/faqs",
+          title: 'FAQs',
+          url: '/dashboard/faqs',
         },
         {
-          title: "Contact submissions",
-          url: "/dashboard/contact-submissions",
+          title: 'Contact submissions',
+          url: '/dashboard/contact-submissions',
         },
         {
-          title: "Footer",
-          url: "/dashboard/footer",
+          title: 'Footer',
+          url: '/dashboard/footer',
         },
       ],
     },
   ],
-  
-}
+};
 
-type AppSidebarProps = {email?: string} & React.ComponentProps<typeof Sidebar>;
-
+type AppSidebarProps = { email?: string } & React.ComponentProps<typeof Sidebar>;
 
 export function AppSidebar({ email, ...props }: AppSidebarProps) {
   return (
@@ -90,13 +85,11 @@ export function AppSidebar({ email, ...props }: AppSidebarProps) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-     {
-      email && (
+      {email && (
         <SidebarFooter>
-          <NavUser email={email}  />
+          <NavUser email={email} />
         </SidebarFooter>
-      )
-     }
+      )}
     </Sidebar>
-  )
+  );
 }
