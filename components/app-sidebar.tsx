@@ -28,12 +28,12 @@ const data = {
           url: '/dashboard/navbar',
         },
         {
-          title: 'carousel',
+          title: 'Carousel',
           url: '/dashboard/carousel',
         },
         {
-          title: 'About us',
-          url: '/dashboard/about-us',
+          title: 'About',
+          url: '/dashboard/about',
         },
         {
           title: 'Features',

@@ -1,7 +1,8 @@
 "use client"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { date, z } from "zod"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,38 +15,74 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
 import { Textarea } from "@/components/ui/textarea"
+import { updateAboutUs, uploadImage } from "./actions"
+import { toast } from "@/hooks/use-toast"
+import { Label } from "@/components/ui/label"
+import Image from "next/image"
 
 
 const formSchema = z.object({
-    title: z.string().min(2).max(50),
-    description: z.string().min(2).max(200),
-    cta_text: z.string().min(2).max(50),
-    cta_link: z.string().url().url(),
+    title: z.string().min(5).max(100),
+    description: z.string().min(10).max(500),
+    image_url: z.string().min(10).max(500).url(),
 })
 
-export type CarouselFormValues = z.infer<typeof formSchema>;
+export type AboutFormValues = z.infer<typeof formSchema>
 
-type CarouselFormProps = {
-    onSubmit: (values: CarouselFormValues) => void;
-    defaultValues?: CarouselFormValues;
-    isEdit?: boolean;
+type AboutFormProps = {
+    aboutUs: AboutFormValues;
 }
 
-export default function CarouselForm({ onSubmit, defaultValues, isEdit }: CarouselFormProps) {
-    const router = useRouter();
+export default function AboutForm({ aboutUs }: AboutFormProps) {
+    // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: defaultValues || {
+        defaultValues: aboutUs || {
             title: '',
             description: '',
-            cta_text: '',
-            cta_link: '',
+            image_url: '',
         },
     })
 
+    async function onSubmit(values: AboutFormValues) {
+        const { success, error } = await updateAboutUs(values);
+        if (success) {
+            toast({
+                title: 'About Us Updated',
+            })
+        } else {
+            toast({
+                title: 'Error',
+                description: error,
+                variant: 'destructive'
+            })
+        }
+    }
+
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const {success, error, imageUrl} = await uploadImage(file);
+            if (success) {
+                toast({
+                    title: 'Image Uploaded',
+                })
+                form.setValue('image_url', imageUrl!);
+            }
+            else {
+                toast({
+                    title: 'Error',
+                    description: error,
+                    variant: 'destructive'
+                })
+                
+        }
+    }
+}
+
     return (
+
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
@@ -58,7 +95,7 @@ export default function CarouselForm({ onSubmit, defaultValues, isEdit }: Carous
                                 <Input placeholder="Title" {...field} />
                             </FormControl>
                             <FormDescription>
-                                The is the title of the carousel item.
+                                This is your public Title.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -74,49 +111,37 @@ export default function CarouselForm({ onSubmit, defaultValues, isEdit }: Carous
                                 <Textarea placeholder="Description" {...field} />
                             </FormControl>
                             <FormDescription>
-                                The is the description of the carousel item.
+                                This is your public description.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2">
                     <FormField
-                        name="cta_text"
+                        name="image_url"
                         control={form.control}
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Cta text</FormLabel>
+                                <FormLabel>Image URL</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Description" {...field} />
+                                    <Input placeholder="img url" {...field} disabled />
                                 </FormControl>
                                 <FormDescription>
-                                    The is the cta text of the carousel item.
+                                    This is your public img url.
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        name="cta_link"
-                        control={form.control}
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Cta Link</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="cta Link" {...field} />
-                                </FormControl>
-                                <FormDescription>
-                                    The is the cta link of the carousel item.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <Label htmlFor="picture">Picture</Label>
+                        <Input id="picture" type="file" onChange={handleImageChange} />
+                        <Image src={aboutUs.image_url} alt="About Us" width={400} height={400} className="rounded-lg object-cover" />
+                    </div>
                 </div>
-                <div className="flex justify-end gap-4">
-                    <Button type="button" variant='outline' onClick={() => router.push('/dashboard/carousel')}>Cancel</Button>
-                    <Button type="submit">{isEdit ? 'Update' : 'Create'}</Button>
+                <div className="flex justify-end">
+                    <Button type="submit">Submit</Button>
                 </div>
             </form>
         </Form>
